@@ -39,14 +39,17 @@ const loginProcess = async () => {
 
 <style scoped>
 #login-form-modal-container {
- 
+    position: fixed; /* чтобы модальное окно было поверх всех элементов (его нельзя сместить)*/
+    z-index: 1000; /* чтобы модальное окно было выше всех элементов*/
     width: 100vw;
     height: 100vh;
     border: 1px solid red;
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 #login-form-modal-content {
   background-color: white;
     background-size: cover;

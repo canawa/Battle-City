@@ -4,10 +4,15 @@
 
 <template>
 <div id="main">
-    <h1>Main</h1>
+    
 </div>
 </template>
 
 <style scoped>
+#main {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
 
 </style>
