@@ -46,3 +46,13 @@ def login(user_data: RegisterSchema):
         return response
     except Exception as e:
         return {'error': str(e)}
+
+
+@app.post('/api/forgotpassword')
+def forgot_password(email: EmailStr):
+    try:
+        response = supabase_admin.auth.reset_password_for_email(email)
+        return response
+    except Exception as e:
+        return {'error': str(e)}
+

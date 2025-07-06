@@ -3,11 +3,13 @@ import { ref } from 'vue' // ref - это функция из vue, котора�
 import {useRouter} from 'vue-router' // импортируем из vue-router, которая позволяет переходить на другую страницу
 import RegisterModal from './RegisterModal.vue'
 import LoginModal from './LoginModal.vue'
+import ForgotPasswordModal from './ForgotPasswordModal.vue'
 const router = useRouter() // это функция из vue-router, которая позволяет переходить на другую страницу
 const errorMessage = ref('')
 
 let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
+let showForgotPasswordModal = ref(false)
 </script>
 
 <template>
@@ -15,7 +17,7 @@ let showLoginModal = ref(false)
 <div id="header"  @click="showLoginModal = false, showRegisterModal = false">
     <div id="header-logo">
     
-      <img src="/src/assets/logo.png" alt="logo" id="logo"> <!-- logo - это переменная, которая лежит в App.vue. Переменные из script передаются в template через {{ }} -->
+      <img src="/src/assets/logo.png" alt="logo" id="logo" @click="router.push('/')"> <!-- logo - это переменная, которая лежит в App.vue. Переменные из script передаются в template через {{ }} -->
     
     </div>
 
@@ -25,7 +27,8 @@ let showLoginModal = ref(false)
 
     </div>
   </div>  
-  <LoginModal v-if="showLoginModal" @closeLogin="showLoginModal = false" @openRegister="'showRegisterModal=true,'"/>
+  <LoginModal v-if="showLoginModal" @closeLogin="showLoginModal = false" @openRegister="showRegisterModal=true, showLoginModal=false" @openForgotPassword="showForgotPasswordModal = true"/>
+  <ForgotPasswordModal v-if="showForgotPasswordModal" @closeForgotPassword="showForgotPasswordModal = false" @openLogin="showLoginModal = true, showForgotPasswordModal = false"/>
   <RegisterModal v-if="showRegisterModal" @close="showRegisterModal = false" @openLogin="showLoginModal = true, showRegisterModal = false"/> <!-- этот компонент будет отображаться только если showModal.value === true -->
   <!-- Если прихоидит от RegisterModal событие через $emit('close') = false то showModal = false -->
 <!-- Это метод обмена инфой от дочернего элемента (RegisterModal) к родительскому элементу (header) в котором лежит showModal-->

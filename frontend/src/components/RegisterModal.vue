@@ -14,10 +14,20 @@ const registerProcess = async () => {
   })
   const data = await response.json()
   console.log(data)
-  if (data.error == true) {
+  if (data.error) {
     errorMessage.value = data.error
-  } else {
-    errorMessage.value = 'Успешно зарегистрированы! Подтвердите почту!'
+  } 
+  else if (data.detail && data.detail[0].type == 'string_too_long') {  // ошибки возвращаются в виде массива, поэтому data.детали.[позиция в массиве (обычно 0)].type == 'string_too_long'
+    errorMessage.value = 'Password is too long'
+  }
+  else if (data.detail && data.detail[0].type == 'string_too_short') {
+    errorMessage.value = 'Password is too short'
+  }
+  else if (data.detail && data.detail[0].type == 'value_error') {
+    errorMessage.value = 'Email is not valid'
+  }
+  else {
+    errorMessage.value = 'Successfully registered! Please confirm your email!'
   }
 }
 </script>
@@ -30,20 +40,20 @@ const registerProcess = async () => {
       </div>
       <div id="register-form-modal-content-form">
         <h2 id='register-title'>Create account</h2>
-        <input type="email" id="login-input" placeholder="Введите вашу почту">
-        <input type="password" id="password-input" placeholder="Придумайте пароль">
-        <button type="button" id="register-button" @click="registerProcess()">Зарегистрироваться</button>
+        <input type="email" id="login-input" placeholder="Enter your email">
+        <input type="password" id="password-input" placeholder="Create a password">
+        <button type="button" id="register-button" @click="registerProcess()">Register</button>
         
         <!-- Сообщения об ошибках и успехе -->
-        <div v-if="errorMessage" :class="errorMessage.includes('Успешно') ? 'success-message' : 'error-message'">
+        <div v-if="errorMessage" :class="errorMessage.includes('Successfully') ? 'success-message' : 'error-message'">
           {{ errorMessage }}
         </div>
         
         <!-- Дополнительные ссылки -->
         <div class="additional-links">
           <div class="login-link">
-            <span class="login-text">Уже есть аккаунт? </span>
-            <a href="#" class="link-text highlighted" @click="$emit('openLogin')">Войти</a>
+            <span class="login-text">Already have an account? </span>
+            <a href="#" class="link-text highlighted" @click="$emit('openLogin')">Login</a>
           </div>
         </div>
       </div>
