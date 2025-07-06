@@ -25,8 +25,8 @@ let showLoginModal = ref(false)
 
     </div>
   </div>  
-  <LoginModal v-if="showLoginModal" @closeLogin="showLoginModal = false" />
-  <RegisterModal v-if="showRegisterModal" @close="showRegisterModal = false"/> <!-- этот компонент будет отображаться только если showModal.value === true -->
+  <LoginModal v-if="showLoginModal" @closeLogin="showLoginModal = false" @openRegister="'showRegisterModal=true,'"/>
+  <RegisterModal v-if="showRegisterModal" @close="showRegisterModal = false" @openLogin="showLoginModal = true, showRegisterModal = false"/> <!-- этот компонент будет отображаться только если showModal.value === true -->
   <!-- Если прихоидит от RegisterModal событие через $emit('close') = false то showModal = false -->
 <!-- Это метод обмена инфой от дочернего элемента (RegisterModal) к родительскому элементу (header) в котором лежит showModal-->
 
@@ -43,8 +43,12 @@ let showLoginModal = ref(false)
 
 
 #logo {
-  width: 6%;
+  width: 10vh; /* 10vh - это 10% от высоты экрана (ДА ВСЕ ПРАВИЛЬНО, ВЫСОТЫ ДЛЯ ШИРИНЫ, ПОТОМУ ЧТО НИКТО НЕ СЖИМАЕТ ЭКРАН ПО ВЕРТИКАЛИ)*/
+
 } 
+
+
+
 #header { /* стили для div с id logo */
   display: flex;
   color: white;
@@ -62,7 +66,7 @@ let showLoginModal = ref(false)
   display: flex;
   align-items: center;
   justify-content: right;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-right: 1.5%;
   width: 15%;
   height: 100%;
@@ -77,8 +81,8 @@ let showLoginModal = ref(false)
   color: white;
   background-color: #09a24e;
   transition: background-color 0.3s ease;
-  border-radius: 10px;
-  height: 50%;
+  border-radius: 0.5rem;
+  height: 4vh;
   border: none;
   
 }
@@ -94,10 +98,10 @@ let showLoginModal = ref(false)
   color: white;
   background-color: #1e2841;
   transition: background-color 0.3s ease;
-  border-radius: 10px;
-  height: 50%;
-  padding: 0 4%;
-  margin-right: 2%;
+  border-radius: 0.5rem;
+  height: 4vh;
+  padding: 0 1vh;
+  margin-right: 1vh;
   border: none;
 }
 
