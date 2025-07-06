@@ -316,7 +316,7 @@ const registerProcess = async () => {
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 768px) {
   #register-form-modal-content {
-    width: 90vw !important;
+    width: 85vw !important;
     min-height: 60vh !important;
     max-height: 80vh !important;
     flex-direction: column !important;
@@ -386,15 +386,15 @@ const registerProcess = async () => {
   }
   
   #register-form-modal-content {
-    width: 95vw !important;
+    width: 90vw !important;
     min-height: 70vh !important;
     max-height: 85vh !important;
   }
   
   #register-form-modal-content-image {
-    height: 20vh !important;
-    min-height: 150px !important;
-    max-height: 250px !important;
+    height: 25vh !important;
+    min-height: 180px !important;
+    max-height: 300px !important;
     margin-top: 3rem !important;
   }
   

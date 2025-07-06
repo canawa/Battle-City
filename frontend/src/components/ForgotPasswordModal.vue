@@ -103,7 +103,7 @@ const forgotPasswordProcess = async () => {
 }
 @media (max-width: 768px) {
   #battle-city-banner-image {
-    content: url('@/assets/battleCityBannerMobile.png');
+    content: url('@/assets/forgotPasswordMobile.png');
     width: 100%;
   }
 }
@@ -121,6 +121,7 @@ const forgotPasswordProcess = async () => {
 
 #forgot-password-title {
   font-size: 2.5rem;
+  z-index: 1000 !important;
   font-weight: 700;
   color: white;
   font-family: 'Manrope', sans-serif;
@@ -318,7 +319,7 @@ const forgotPasswordProcess = async () => {
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 768px) {
   #forgot-password-modal-content {
-    width: 90vw !important;
+    width: 85vw !important;
     min-height: 60vh !important;
     max-height: 80vh !important;
     flex-direction: column !important;
@@ -331,15 +332,17 @@ const forgotPasswordProcess = async () => {
     min-height: 200px !important;
     max-height: 300px !important;
     margin: 0 !important;
+    margin-top: 2rem !important;
     justify-content: center;
     align-items: center;
   }
   
   #battle-city-banner-image {
     width: 100% !important;
-    max-width: 400px !important;
+    max-width: 350px !important;
     height: auto !important;
     object-fit: contain !important;
+    margin-top: 1rem !important;
   }
   
   #forgot-password-modal-content-form {
@@ -354,6 +357,7 @@ const forgotPasswordProcess = async () => {
   #forgot-password-title {
     font-size: 2rem;
     margin-bottom: 0.5rem;
+    z-index: 1000 !important;
   }
   
   #email-input {
@@ -375,6 +379,7 @@ const forgotPasswordProcess = async () => {
   
   .back-text {
     font-size: 0.8rem;
+    z-index: 1000 !important;
   }
   
   .link-text {
@@ -384,16 +389,17 @@ const forgotPasswordProcess = async () => {
 
 @media (max-width: 480px) {
   #battle-city-banner-image {
-    content: url('@/assets/battleCityBannerMobile.png');
+    content: url('@/assets/forgotPassword.png');
   }
   
   #forgot-password-modal-content {
-    width: 95vw !important;
+    width: 90vw !important;
     min-height: 70vh !important;
     max-height: 85vh !important;
   }
   
   #forgot-password-modal-content-image {
+  
     height: 20vh !important;
     min-height: 150px !important;
     max-height: 250px !important;
@@ -410,6 +416,7 @@ const forgotPasswordProcess = async () => {
   
   #forgot-password-title {
     font-size: 1.8rem;
+    z-index: 1000 !important;
   }
   
   #login-input {

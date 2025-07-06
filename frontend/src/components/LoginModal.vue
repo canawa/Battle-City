@@ -353,7 +353,7 @@ const loginProcess = async () => {
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 768px) {
   #login-form-modal-content {
-    width: 90vw !important;
+    width: 85vw !important;
     min-height: 60vh !important;
     max-height: 80vh !important;
     flex-direction: column !important;
@@ -419,15 +419,15 @@ const loginProcess = async () => {
 
 @media (max-width: 480px) {
   #login-form-modal-content {
-    width: 95vw !important;
+    width: 90vw !important;
     min-height: 70vh !important;
     max-height: 85vh !important;
   }
   
   #login-form-modal-content-image {
-    height: 20vh !important;
-    min-height: 150px !important;
-    max-height: 250px !important;
+    height: 25vh !important;
+    min-height: 180px !important;
+    max-height: 300px !important;
     margin-top: 3rem !important;
   }
   
