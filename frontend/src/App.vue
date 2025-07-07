@@ -9,7 +9,6 @@ import Header from './components/Header.vue'
 
   <Header /> <!-- компонент header -->
 
-
   <router-view /> <!-- этот тег будет заменяться на компонент, который мы указали в main.js -->
 </div>
 </template>

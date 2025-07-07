@@ -6,10 +6,19 @@ import LoginModal from './LoginModal.vue'
 import ForgotPasswordModal from './ForgotPasswordModal.vue'
 const router = useRouter() // это функция из vue-router, которая позволяет переходить на другую страницу
 const errorMessage = ref('')
-
+const isLoggedIn = ref(false)
 let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
+
+const checkIfLoggedIn = async () => {
+  const response = await fetch('/api/checkifloggedin')
+  const data = await response.json()
+  console.log(data)
+  // isLoggedIn.value = data.isLoggedIn
+}
+checkIfLoggedIn()
+
 </script>
 
 <template>
@@ -21,7 +30,8 @@ let showForgotPasswordModal = ref(false)
     
     </div>
 
-    <div id="header-auth-buttons" @click.stop>  
+    <div id="header-auth-buttons" @click.stop >  <!-- v-if="isLoggedIn.value === false" -->
+
       <button type="button" id="header-login-button" @click="showLoginModal = true, showRegisterModal = false">  Login  </button> <!-- в vue js юзаем @click и потом метод, функцию, которая будет выполняться при нажатии на кнопку-->
       <button type="button" id="header-register-button" @click="showRegisterModal = true, showLoginModal = false">  Create Account  </button> <!-- в vue js юзаем @click и потом метод, функцию, которая будет выполняться при нажатии на кнопку-->
 

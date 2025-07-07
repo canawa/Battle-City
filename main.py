@@ -57,11 +57,37 @@ def forgot_password(email: ForgotPasswordSchema):
     try:    
         response = supabase_admin.auth.reset_password_for_email(email.emailValue,
         {
-            'redirect_to': 'http://localhost:5173/resetpassword' 
+            'redirect_to': 'http://localhost:5173/#/resetpassword' 
         })
+        if response == None:
+            return {'status': 'Email was sent'} 
+        return response # ничего не возвращает, потому что отправляется письмо на почту, и если письмо отправлено, то возвращается 200
+    except Exception as e:
+        return {'error': str(e)}
 
+
+class ResetPasswordSchema(BaseModel):
+    newPassword: str
+
+@app.post('/api/resetpassword')
+def reset_password(password: ResetPasswordSchema):
+    try:
+        response = supabase_admin.auth.update_user(
+            {
+                'password': password.newPassword
+            }
+        )
         print(response)
         return response
     except Exception as e:
         return {'error': str(e)}
 
+
+@app.get('/api/checkifloggedin')
+def check_if_logged_in():
+    try:
+        response = supabase_admin.auth.get_user() # получаем информацию о пользователе
+        print(response)
+        return response
+    except Exception as e:
+        return {'error': str(e)}

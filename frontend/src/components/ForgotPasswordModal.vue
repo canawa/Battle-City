@@ -14,12 +14,11 @@ const forgotPasswordProcess = async () => {
   })
   const data = await response.json()
   console.log(data)
-  
   // Проверяем статус ответа
-  if (data.error) {
+  if (data && data.error) {
     errorMessage.value = data.error
   }
-  else if (data.detail && data.detail[0].type == 'value_error') {
+  else if (data && data.detail && data.detail[0] && data.detail[0].type == 'value_error') {
     errorMessage.value = 'Email is not valid'
   }
   else {
