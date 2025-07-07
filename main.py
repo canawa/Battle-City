@@ -20,6 +20,15 @@ supabase_anon: Client = create_client(url, anon_key)
 app = FastAPI() 
 
 
+
+@app.post('/api/logout')
+def logout():
+    try:
+        response = supabase_admin.auth.sign_out()
+        return response
+    except Exception as e:
+        return {'error': str(e)}
+
 class RegisterSchema(BaseModel):
     login: EmailStr
     password: str = Field(min_length=8, max_length=20)
@@ -27,13 +36,16 @@ class RegisterSchema(BaseModel):
 @app.post('/api/register')
 def register(user_data: RegisterSchema): #приходящий объект назовем user_data, и потом можно в него углубляться и вытаскивать данные
     try:
-        response = supabase_anon.auth.sign_up( # используем метод (функцию) supabase.auth.sign_up для регистрации (от анонимного ключа, потому что от админки не идет письмо на почту)
+        response = supabase_anon.auth.sign_up ( # используем метод (функцию) supabase.auth.sign_up для регистрации (от анонимного ключа, потому что от админки не идет письмо на почту)
         {
             'email': user_data.login, # передаем данные из объекта user_data в функцию supabase.auth.sign_up
             'password': user_data.password, # передаем данные из объекта user_data в функцию supabase.auth.sign_up
-            
-        }
-        )
+            'options': {
+                'email_redirect_to': 'http://localhost:5173/#/login' # ублюдский синтаксис, но так надо, меняет ссылку на которую перекинет после подтверждения почты
+            }    
+        },
+
+    )
         return response
     except Exception as e:
         return {'error': str(e)}
@@ -92,7 +104,12 @@ def reset_password(password: ResetPasswordSchema):
 def check_if_logged_in(jwt_token: HTTPAuthorizationCredentials = Depends(HTTPBearer())): # Depends(HTTPBearer()) - это зависимость, которая позволяет получить токен из заголовков запроса (и передает в jwt_token как credentials)
     try:
         response = supabase_admin.auth.get_user(jwt_token.credentials) # получаем информацию о пользователе (в credentials лежит токен - благодаря Depends(HTTPBearer()) мы его получили)
-        print(response)
-        return response
+        if response.user or response.session:
+            return {'user': True}
+        else:
+            return {'user': False}
+        
     except Exception as e:
         return {'error': str(e)}
+
+

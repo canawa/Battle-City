@@ -18,6 +18,7 @@ const loginProcess = async () => {
   console.log(data)
   if (data.session) {
     localStorage.setItem('access_token', data.session.access_token) // токен который возвращает апишка надо сохранить локально (вытаскивать его через localStorage.getItem('access_token'))
+    location.reload()
   }
   else {
     errorMessage.value = data.error
@@ -43,6 +44,9 @@ const loginProcess = async () => {
 }
 // ОБРАБОТЧИК ОШИБОК АУТЕНТИФИКАЦИИ
 
+
+
+
 </script>
 
 <template>
@@ -54,7 +58,7 @@ const loginProcess = async () => {
 
       </div>
       <div id="login-form-modal-content-form">
-
+       
     <h2 id='login-title'>Log in</h2>
     <input type="email" id="login-input" placeholder="Enter your email">
     <input type="password" id="password-input" placeholder="Enter your password">

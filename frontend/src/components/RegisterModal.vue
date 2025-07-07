@@ -17,7 +17,7 @@ const registerProcess = async () => {
   const data = await response.json()
   if (data.session){
     localStorage.setItem('access_token', data.sesssion.access_token)
-    router.push('/')
+    location.reload()
   }
   console.log(data)
   if (data.error) {

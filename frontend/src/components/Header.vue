@@ -11,6 +11,25 @@ let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
 
+const logout = async () => {
+  const response = await fetch('/api/logout', {
+    method: 'POST',
+   
+  })
+  const data = await response.json()
+  console.log(data)
+  if (response.ok) {
+    console.log('Successfully logged out')
+    localStorage.removeItem('access_token')
+    location.reload()
+  }
+  else {
+    console.log('Failed to logout')
+  }
+}
+
+
+
 const checkIfLoggedIn = async () => {
   const token = localStorage.getItem('access_token')
   const response = await fetch('/api/checkifloggedin', {
@@ -18,11 +37,31 @@ const checkIfLoggedIn = async () => {
       'Authorization': `Bearer ${token}` // отправляет токен в строке запроса (стандратная форма такая просто удобно и очень безопасно)
     }
   })
+
   const data = await response.json()
- 
-  // isLoggedIn.value = data.isLoggedIn
+
+  console.log(data)
+
+  if (data.error) {
+    console.log('not logged in')
+  }
+  else {
+    console.log('logged in')
+  }
+
+  if (data.user || data.session) {
+    isLoggedIn.value = true
+    router.push('/')
+  }
+  else {
+    isLoggedIn.value = false
+  }
+
+
 }
 checkIfLoggedIn()
+
+
 
 </script>
 
@@ -35,8 +74,13 @@ checkIfLoggedIn()
     
     </div>
 
-    <div id="header-auth-buttons" @click.stop >  <!-- v-if="isLoggedIn.value === false" -->
 
+    <div id="header-logout-button" >  
+      <button type="button" id="header-logout-button" @click="logout">  Logout  </button>
+    </div>
+    <div id="header-auth-buttons" @click.stop v-if="!isLoggedIn" >  <!-- в template vue-js автоматически разворачивает ref, поэтому можно не писать про .value -->
+<!-- Не пиши == true или == false, пиши просто !isLoggedIn  или isLoggedIn  потому что vue если написать через === то будет сравнение с ref объектом, а не с булевым значением внутри ref-->
+      
       <button type="button" id="header-login-button" @click="showLoginModal = true, showRegisterModal = false">  Login  </button> <!-- в vue js юзаем @click и потом метод, функцию, которая будет выполняться при нажатии на кнопку-->
       <button type="button" id="header-register-button" @click="showRegisterModal = true, showLoginModal = false">  Create Account  </button> <!-- в vue js юзаем @click и потом метод, функцию, которая будет выполняться при нажатии на кнопку-->
 
