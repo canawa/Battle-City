@@ -12,9 +12,14 @@ let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
 
 const checkIfLoggedIn = async () => {
-  const response = await fetch('/api/checkifloggedin')
+  const token = localStorage.getItem('access_token')
+  const response = await fetch('/api/checkifloggedin', {
+    headers: {
+      'Authorization': `Bearer ${token}` // отправляет токен в строке запроса (стандратная форма такая просто удобно и очень безопасно)
+    }
+  })
   const data = await response.json()
-  console.log(data)
+ 
   // isLoggedIn.value = data.isLoggedIn
 }
 checkIfLoggedIn()

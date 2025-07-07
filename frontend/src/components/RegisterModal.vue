@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const errorMessage = ref('')
 
 const registerProcess = async () => {
@@ -13,6 +15,10 @@ const registerProcess = async () => {
     body: JSON.stringify({ login, password })
   })
   const data = await response.json()
+  if (data.session){
+    localStorage.setItem('access_token', data.sesssion.access_token)
+    router.push('/')
+  }
   console.log(data)
   if (data.error) {
     errorMessage.value = data.error

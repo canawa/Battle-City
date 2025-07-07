@@ -1,8 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from supabase import create_client, Client
 import dotenv
 from pydantic import BaseModel, Field, EmailStr
 import os
+from fastapi import HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
 
 dotenv.load_dotenv() # загружаем переменные окружения из .env файла (в проде не надо)
 url: str = os.environ.get("SUPABASE_URL") # надо будет добавить в ~bashrc на убунту серваке
@@ -27,7 +30,8 @@ def register(user_data: RegisterSchema): #приходящий объект на
         response = supabase_anon.auth.sign_up( # используем метод (функцию) supabase.auth.sign_up для регистрации (от анонимного ключа, потому что от админки не идет письмо на почту)
         {
             'email': user_data.login, # передаем данные из объекта user_data в функцию supabase.auth.sign_up
-            'password': user_data.password # передаем данные из объекта user_data в функцию supabase.auth.sign_up
+            'password': user_data.password, # передаем данные из объекта user_data в функцию supabase.auth.sign_up
+            
         }
         )
         return response
@@ -57,7 +61,7 @@ def forgot_password(email: ForgotPasswordSchema):
     try:    
         response = supabase_admin.auth.reset_password_for_email(email.emailValue,
         {
-            'redirect_to': 'http://localhost:5173/#/resetpassword' 
+            'redirect_to': 'http://localhost:5173/#/resetpassword'  # перенаправление на страницу сброса пароля (это после нажатия на кнопку в письме, а не сразу)
         })
         if response == None:
             return {'status': 'Email was sent'} 
@@ -83,10 +87,11 @@ def reset_password(password: ResetPasswordSchema):
         return {'error': str(e)}
 
 
+
 @app.get('/api/checkifloggedin')
-def check_if_logged_in():
+def check_if_logged_in(jwt_token: HTTPAuthorizationCredentials = Depends(HTTPBearer())): # Depends(HTTPBearer()) - это зависимость, которая позволяет получить токен из заголовков запроса (и передает в jwt_token как credentials)
     try:
-        response = supabase_admin.auth.get_user() # получаем информацию о пользователе
+        response = supabase_admin.auth.get_user(jwt_token.credentials) # получаем информацию о пользователе (в credentials лежит токен - благодаря Depends(HTTPBearer()) мы его получили)
         print(response)
         return response
     except Exception as e:

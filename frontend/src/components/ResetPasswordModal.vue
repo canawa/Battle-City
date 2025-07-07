@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const errorMessage = ref('')
 const successMessage = ref('')
 const newPassword = ref('')
@@ -33,6 +34,7 @@ const resetPasswordProcess = async () => {
       successMessage.value = 'Password changed successfully!'
       errorMessage.value = ''
       newPassword.value = ''
+      router.push('/')
 
     }
   } catch (error) {

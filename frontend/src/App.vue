@@ -2,6 +2,9 @@
 
 import Header from './components/Header.vue'
 
+console.log('%cATTENTION!', 'color: red; font-size: 100px; font-weight: bold;');
+console.log('%cPlease do not insert or enter any code here! This can harm your account or security.', 'color: orange; font-size: 30px;');
+
 </script>
 
 <template>

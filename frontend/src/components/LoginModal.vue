@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const errorMessage = ref('')
 
 const loginProcess = async () => {
@@ -13,7 +15,13 @@ const loginProcess = async () => {
     body: JSON.stringify({ login, password })
   })
   const data = await response.json()
-  console.log('Response data:', data)
+  console.log(data)
+  if (data.session) {
+    localStorage.setItem('access_token', data.session.access_token) // токен который возвращает апишка надо сохранить локально (вытаскивать его через localStorage.getItem('access_token'))
+  }
+  else {
+    errorMessage.value = data.error
+  }
   
   // Проверяем статус ответа
   if (data.error) {
@@ -30,6 +38,7 @@ const loginProcess = async () => {
   }
    else {
     errorMessage.value = 'Successfully logged in!'
+    router.push('/')
   }
 }
 // ОБРАБОТЧИК ОШИБОК АУТЕНТИФИКАЦИИ
