@@ -48,10 +48,19 @@ def login(user_data: RegisterSchema):
         return {'error': str(e)}
 
 
+class ForgotPasswordSchema(BaseModel):
+    emailValue: EmailStr
+
+
 @app.post('/api/forgotpassword')
-def forgot_password(email: EmailStr):
-    try:
-        response = supabase_admin.auth.reset_password_for_email(email)
+def forgot_password(email: ForgotPasswordSchema):
+    try:    
+        response = supabase_admin.auth.reset_password_for_email(email.emailValue,
+        {
+            'redirect_to': 'http://localhost:5173/resetpassword' 
+        })
+
+        print(response)
         return response
     except Exception as e:
         return {'error': str(e)}

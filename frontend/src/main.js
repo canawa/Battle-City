@@ -7,10 +7,12 @@ import Header from './components/Header.vue'
 import Main from './components/Main.vue'
 import Register from './components/RegisterModal.vue'
 import Login from './components/LoginModal.vue'
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: '/', component: Main },  // настройка роутинга (тут страницы, каждая страница - это компонент)
+    { path: '/', component: Main },
+    // {path: '/resetpassword', component: ResetPasswordModal}  // настройка роутинга (тут страницы, каждая страница - это компонент)
   ]
 })
 

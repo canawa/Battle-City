@@ -49,7 +49,7 @@ const loginProcess = async () => {
     <h2 id='login-title'>Log in</h2>
     <input type="email" id="login-input" placeholder="Enter your email">
     <input type="password" id="password-input" placeholder="Enter your password">
-    <button type="button" id="login-button" @click="loginProcess()">Login</button>
+    <button type="button" id="login-button" @click="loginProcess()">Start Battle!</button>
     
     <!-- Сообщения об ошибках и успехе -->
     <div v-if="errorMessage" :class="errorMessage.includes('Successfully') ? 'success-message' : 'error-message'"> <!-- Тут чутка непонятно, но вроде как если в errorMessage будет Successfully, то будет success-message класс, а если нет, то error-message класс-->

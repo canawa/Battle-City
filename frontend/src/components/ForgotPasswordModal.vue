@@ -1,18 +1,19 @@
 <script setup>
 import { ref } from 'vue'
 const errorMessage = ref('')
-
+const email = ref('')
 const forgotPasswordProcess = async () => {
-  const email = document.getElementById('login-input').value
+  const emailValue = email.value    
+  console.log(emailValue)
   const response = await fetch('/api/forgotpassword', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ emailValue })
   })
   const data = await response.json()
-  console.log('Response data:', data)
+  console.log(data)
   
   // Проверяем статус ответа
   if (data.error) {
@@ -37,8 +38,8 @@ const forgotPasswordProcess = async () => {
       </div>
       <div id="forgot-password-modal-content-form">
         <h2 id='forgot-password-title'>Reset Password</h2>
-        <input type="email" id="login-input" placeholder="Enter your email">
-        <button type="button" id="forgot-password-button" @click="forgotPasswordProcess()">Send Reset Link</button>
+        <input type="email" id="login-input" placeholder="Enter your email" v-model="email"> <!-- v-model="email" - при каждом изменении в input, email будет обновляться -->
+        <button id="forgot-password-button" @click="forgotPasswordProcess()">Send Reset Link</button> <!-- когда email дописан, функция берет последнее его значение и запихивает в fetch -->
         
         <!-- Сообщения об ошибках и успехе -->
         <div v-if="errorMessage" :class="errorMessage.includes('sent') ? 'success-message' : 'error-message'">
@@ -342,7 +343,7 @@ const forgotPasswordProcess = async () => {
     max-width: 350px !important;
     height: auto !important;
     object-fit: contain !important;
-    margin-top: 1rem !important;
+    margin-top: 20rem !important;
   }
   
   #forgot-password-modal-content-form {

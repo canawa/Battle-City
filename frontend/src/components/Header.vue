@@ -87,6 +87,7 @@ let showForgotPasswordModal = ref(false)
   border-radius: 0.5rem;
   height: 4vh;
   border: none;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   
 }
 
@@ -101,6 +102,7 @@ let showForgotPasswordModal = ref(false)
   color: white;
   background-color: #1e2841;
   transition: background-color 0.3s ease;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 0.5rem;
   height: 4vh;
   padding: 0 1vh;
