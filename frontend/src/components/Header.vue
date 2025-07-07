@@ -75,8 +75,11 @@ checkIfLoggedIn()
     </div>
 
 
-    <div id="header-logout-button" >  
+    <div id="header-logged-in-user" v-if="isLoggedIn"> 
+      
       <button type="button" id="header-logout-button" @click="logout">  Logout  </button>
+      <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon"> </div> 
+
     </div>
     <div id="header-auth-buttons" @click.stop v-if="!isLoggedIn" >  <!-- в template vue-js автоматически разворачивает ref, поэтому можно не писать про .value -->
 <!-- Не пиши == true или == false, пиши просто !isLoggedIn  или isLoggedIn  потому что vue если написать через === то будет сравнение с ref объектом, а не с булевым значением внутри ref-->
@@ -103,10 +106,14 @@ checkIfLoggedIn()
 
 <style scoped>
 
+#user-icon {
+  height: 4vh; /* 2% от высоты экрана, как у логотипа */
+  margin-right: 0.8rem;
+}
 
 #logo {
   width: 10vh; /* 10vh - это 10% от высоты экрана (ДА ВСЕ ПРАВИЛЬНО, ВЫСОТЫ ДЛЯ ШИРИНЫ, ПОТОМУ ЧТО НИКТО НЕ СЖИМАЕТ ЭКРАН ПО ВЕРТИКАЛИ)*/
-
+  margin-right: 1rem
 } 
 
 
@@ -122,6 +129,16 @@ checkIfLoggedIn()
   justify-content: space-between;
   background-color: #12192b;
   border-radius: 1rem;
+}
+
+#header-logged-in-user {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  flex-direction: row;
+ 
+  width: 8%;
+  height: 100%;
 }
 
 #header-auth-buttons {
