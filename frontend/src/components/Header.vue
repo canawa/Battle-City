@@ -22,7 +22,7 @@ const getUserBalance = async () => {
   })
   const data = await response.json()
   console.log(data.data[0])
-  userBalance.value = data.data[0].balance
+  userBalance.value = data.data[0].balance + '$'
   // console.log(userBalance.value)
 }
 
@@ -93,7 +93,7 @@ checkIfLoggedIn()
     </div>
 
     <div id="header-logged-in-user" v-if="isLoggedIn"> 
-      <div id="user-balance"> {{ userBalance }} </div>
+      <div id="user-balance"> <span class="material-icons" id="user-balance-icon"> account_balance_wallet </span> {{ userBalance }} </div>
       <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon" @click="userDropdownMenu = !userDropdownMenu" > </div> 
 
       <div id="user-dropdown-menu" v-if="userDropdownMenu"> 
@@ -141,8 +141,46 @@ checkIfLoggedIn()
   background-color: #09a24e;
   font-size: 0.8rem;
   font-weight: 600;
-  height: 80%;
+  height: 50%;
   width: 100px;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  #user-balance {
+    width: 80px;
+    font-size: 0.7rem;
+    margin-right: 0.5rem;
+    padding: 0.1rem 0.5rem;
+  }
+  
+  #user-balance-icon {
+    font-size: 1rem;
+    margin-right: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #user-balance {
+    width: 70px;
+    font-size: 0.6rem;
+    margin-right: 0.3rem;
+    padding: 0.1rem 0.2em;
+  }
+  
+  #user-balance-icon {
+    font-size: 1.4rem;
+    margin-right: 0.6rem;
+  }
+}
+
+
+
+#user-balance-icon {
+
+  margin-right: 6%;
 }
 
 #user-dropdown-menu-row { /* стили для каждой строки выпадающего меню кроме последней*/
@@ -231,6 +269,21 @@ checkIfLoggedIn()
  
   width: 8%;
   height: 100%;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  #header-logged-in-user {
+    width: auto;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  #header-logged-in-user {
+    width: auto;
+    min-width: 100px;
+  }
 }
 
 #header-auth-buttons {
