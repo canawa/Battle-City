@@ -12,7 +12,7 @@ console.log('%cPlease do not insert or enter any code here! This can harm your a
 
   <Header /> <!-- компонент header -->
 
-  <router-view /> <!-- этот тег будет заменяться на компонент, который мы указали в main.js -->
+  <router-view @click="provide('userDropdownMenu', false)" /> <!-- этот тег будет заменяться на компонент, который мы указали в main.js -->
 </div>
 </template>
 

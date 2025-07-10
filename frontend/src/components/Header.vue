@@ -10,9 +10,7 @@ const isLoggedIn = ref(false)
 let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
-let showUserDropdown = ref(false) // новое состояние для выпадающего меню
 let userDropdownMenu = ref(false)
-
 const logout = async () => {
   const response = await fetch('/api/logout', {
     method: 'POST',
@@ -30,13 +28,6 @@ const logout = async () => {
   }
 }
 
-const toggleUserDropdown = () => {
-  showUserDropdown.value = !showUserDropdown.value
-}
-
-const closeUserDropdown = () => {
-  showUserDropdown.value = false
-}
 
 
 const checkIfLoggedIn = async () => {
@@ -77,27 +68,29 @@ checkIfLoggedIn()
 
 <template>
 
-<div id="header"  @click="showLoginModal = false, showRegisterModal = false">
+<div id="header"  @click="showLoginModal = false, showRegisterModal = false" >
     <div id="header-logo">
     
       <img src="/src/assets/logo.png" alt="logo" id="logo" @click="router.push('/')"> <!-- logo - это переменная, которая лежит в App.vue. Переменные из script передаются в template через {{ }} -->
     
     </div>
 
-
     <div id="header-logged-in-user" v-if="isLoggedIn"> 
-      
-
+      <div id="user-balance">1000Р </div>
       <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon" @click="userDropdownMenu = !userDropdownMenu" > </div> 
+
       <div id="user-dropdown-menu" v-if="userDropdownMenu"> 
+
         <div id="user-dropdown-menu-row">Profile</div>
-        <div id="user-dropdown-menu-row">placeholder</div>
-        <div id="user-dropdown-menu-row">placeholder</div>
-        <div id="user-dropdown-menu-row">placeholder</div>
+        <div id="user-dropdown-menu-row">Vouchers</div>
+        <div id="user-dropdown-menu-row">Bonuses</div>
+        <div id="user-dropdown-menu-row">Settings</div>
         <div id="user-dropdown-menu-last-row" @click="logout()">Logout</div>
 
-
       </div>
+      
+     
+
      </div>
     <div id="header-auth-buttons" @click.stop v-if="!isLoggedIn" >  <!-- в template vue-js автоматически разворачивает ref, поэтому можно не писать про .value -->
 <!-- Не пиши == true или == false, пиши просто !isLoggedIn  или isLoggedIn  потому что vue если написать через === то будет сравнение с ref объектом, а не с булевым значением внутри ref-->
@@ -124,6 +117,17 @@ checkIfLoggedIn()
 
 <style scoped>
 
+#user-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #09a24e;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 80%;
+  width: 100px;
+}
+
 #user-dropdown-menu-row { /* стили для каждой строки выпадающего меню кроме последней*/
   display: flex;
   align-items: center;
@@ -148,8 +152,10 @@ checkIfLoggedIn()
   height: 19.5%;
   width: 100%;
   cursor: pointer;
+}
 
-
+#user-dropdown-menu-last-row:hover {
+  background-color: #76767836;
 }
 
 #user-dropdown-menu-row:hover {
@@ -181,7 +187,8 @@ checkIfLoggedIn()
 
 #logo {
   width: 10vh; /* 10vh - это 10% от высоты экрана (ДА ВСЕ ПРАВИЛЬНО, ВЫСОТЫ ДЛЯ ШИРИНЫ, ПОТОМУ ЧТО НИКТО НЕ СЖИМАЕТ ЭКРАН ПО ВЕРТИКАЛИ)*/
-  margin-right: 1rem
+  margin-right: 1rem;
+  cursor: pointer;
 } 
 
 
