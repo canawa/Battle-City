@@ -5,12 +5,13 @@ from pydantic import BaseModel, Field, EmailStr
 import os
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-
+import jwt
 
 dotenv.load_dotenv() # загружаем переменные окружения из .env файла (в проде не надо)
 url: str = os.environ.get("SUPABASE_URL") # надо будет добавить в ~bashrc на убунту серваке
 service_key: str = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") # надо будет добавить в ~bashrc на убунту серваке
 anon_key: str = os.environ.get("SUPABASE_ANON_KEY") # для регистрации пользователей используем ANON_KEY
+jwt_secret: str = os.environ.get("SUPABASE_JWT_SECRET")
 
 supabase_admin: Client = create_client(url, service_key)
 supabase_anon: Client = create_client(url, anon_key)
@@ -102,8 +103,9 @@ def reset_password(password: ResetPasswordSchema):
 
 @app.get('/api/checkifloggedin')
 def check_if_logged_in(jwt_token: HTTPAuthorizationCredentials = Depends(HTTPBearer())): # Depends(HTTPBearer()) - это зависимость, которая позволяет получить токен из заголовков запроса (и передает в jwt_token как credentials)
-    try:
-        response = supabase_admin.auth.get_user(jwt_token.credentials) # получаем информацию о пользователе (в credentials лежит токен - благодаря Depends(HTTPBearer()) мы его получили)
+    try: # приходит токен, мы его записываем как jwt_token
+        response = supabase_admin.auth.get_user(jwt_token.credentials)
+        print(response) # получаем информацию о пользователе (в credentials лежит токен - благодаря Depends(HTTPBearer()) мы его получили)
         if response.user or response.session:
             return {'user': True}
         else:
@@ -113,3 +115,18 @@ def check_if_logged_in(jwt_token: HTTPAuthorizationCredentials = Depends(HTTPBea
         return {'error': str(e)}
 
 
+@app.get('/api/getuserbalance')
+def balance(jwt_token: HTTPAuthorizationCredentials = Depends(HTTPBearer())): 
+    token = jwt_token.credentials # токен есть, но теперь его надо распарсить, чтобы вытащить информацию 
+    decoded_token = jwt.decode(token, jwt_secret, algorithms=["HS256"], audience="authenticated") # расшифровываем токен, чтобы получить информацию о пользователе
+    uuid = decoded_token['sub'] # получаем uuid пользователя (почему именно так? потому что jwt.decode возвращает словарь, а не объект, поэтому по ключу ищем 'sub')
+    print(uuid)
+    response = (
+        supabase_admin.table('users') # из таблицы users 
+        .select('balance') # выбираем поле balance
+        .eq('auth_user_id', uuid) # ищем пользователя по auth_user_id 
+        .execute() # выполняем запрос (а не просто описываем его)
+    )
+    print(response)
+    return response
+    

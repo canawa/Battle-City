@@ -11,6 +11,22 @@ let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
 let userDropdownMenu = ref(false)
+let userBalance = ref(0)
+
+const getUserBalance = async () => {
+  const token = localStorage.getItem('access_token')
+  const response = await fetch('/api/getuserbalance', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  const data = await response.json()
+  console.log(data.data[0])
+  userBalance.value = data.data[0].balance
+  // console.log(userBalance.value)
+}
+
+
 const logout = async () => {
   const response = await fetch('/api/logout', {
     method: 'POST',
@@ -52,6 +68,7 @@ const checkIfLoggedIn = async () => {
   if (data.user || data.session) {
     isLoggedIn.value = true
     router.push('/')
+    getUserBalance() // получаем баланс после успешного логина
   }
   else {
     isLoggedIn.value = false
@@ -76,7 +93,7 @@ checkIfLoggedIn()
     </div>
 
     <div id="header-logged-in-user" v-if="isLoggedIn"> 
-      <div id="user-balance">1000Р </div>
+      <div id="user-balance"> {{ userBalance }} </div>
       <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon" @click="userDropdownMenu = !userDropdownMenu" > </div> 
 
       <div id="user-dropdown-menu" v-if="userDropdownMenu"> 
