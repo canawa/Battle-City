@@ -10,6 +10,8 @@ const isLoggedIn = ref(false)
 let showRegisterModal = ref(false)
 let showLoginModal = ref(false)
 let showForgotPasswordModal = ref(false)
+let showUserDropdown = ref(false) // новое состояние для выпадающего меню
+let userDropdownMenu = ref(false)
 
 const logout = async () => {
   const response = await fetch('/api/logout', {
@@ -28,6 +30,13 @@ const logout = async () => {
   }
 }
 
+const toggleUserDropdown = () => {
+  showUserDropdown.value = !showUserDropdown.value
+}
+
+const closeUserDropdown = () => {
+  showUserDropdown.value = false
+}
 
 
 const checkIfLoggedIn = async () => {
@@ -63,6 +72,7 @@ checkIfLoggedIn()
 
 
 
+
 </script>
 
 <template>
@@ -77,10 +87,18 @@ checkIfLoggedIn()
 
     <div id="header-logged-in-user" v-if="isLoggedIn"> 
       
-      <button type="button" id="header-logout-button" @click="logout">  Logout  </button>
-      <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon"> </div> 
 
-    </div>
+      <div> <img src="@/assets/user_icon.png" alt="user-icon" id="user-icon" @click="userDropdownMenu = !userDropdownMenu" > </div> 
+      <div id="user-dropdown-menu" v-if="userDropdownMenu"> 
+        <div id="user-dropdown-menu-row">Profile</div>
+        <div id="user-dropdown-menu-row">placeholder</div>
+        <div id="user-dropdown-menu-row">placeholder</div>
+        <div id="user-dropdown-menu-row">placeholder</div>
+        <div id="user-dropdown-menu-last-row" @click="logout()">Logout</div>
+
+
+      </div>
+     </div>
     <div id="header-auth-buttons" @click.stop v-if="!isLoggedIn" >  <!-- в template vue-js автоматически разворачивает ref, поэтому можно не писать про .value -->
 <!-- Не пиши == true или == false, пиши просто !isLoggedIn  или isLoggedIn  потому что vue если написать через === то будет сравнение с ref объектом, а не с булевым значением внутри ref-->
       
@@ -106,9 +124,59 @@ checkIfLoggedIn()
 
 <style scoped>
 
+#user-dropdown-menu-row { /* стили для каждой строки выпадающего меню кроме последней*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #767678;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 19.5%;
+  width: 100%;
+  border-bottom: 1px solid #767678;
+  cursor: pointer;
+
+}
+
+#user-dropdown-menu-last-row { /* стили для каждой строки выпадающего меню кроме последней*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #767678;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 19.5%;
+  width: 100%;
+  cursor: pointer;
+
+
+}
+
+#user-dropdown-menu-row:hover {
+  background-color: #76767836;
+}
+
+
+#user-dropdown-menu {
+  position: absolute;
+  margin-top: 190px;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
+  height: 150px;
+  width: 100px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5); /* тень 0 смещение по оси x, 0 смещение по оси y, 10px blur, 0 растяжение тени по ширине (spread), это смещение! */
+}
+
 #user-icon {
   height: 4vh; /* 2% от высоты экрана, как у логотипа */
   margin-right: 0.8rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+#user-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
 }
 
 #logo {
